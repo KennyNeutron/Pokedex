@@ -1,8 +1,12 @@
+from ast import main
 from flask import Flask, jsonify, request
 import requests
-from tkinter import Tk, Label, Entry, Button, Text
+import tkinter as tk
+from tkinter import font, PhotoImage
+from PIL import Image, ImageTk
 
 app = Flask(__name__)
+
 
 POKEAPI_BASE_URL = "https://pokeapi.co/api/v2"
 
@@ -61,6 +65,15 @@ def get_pokemon_data(name):
     else:
         return {"error": "Pokémon not found"}
 
+root = tk.Tk()
+root.title("Pokédex using PokéAPI by KennyNeutron")
+root.geometry("400x650")
+pokemon_id = tk.IntVar()
+poke_name = tk.StringVar()
+
+icon = PhotoImage(file="icon.png")
+root.iconphoto(False, icon)
+
 def search_pokemon():
     pokemon_name = entry.get()
     pokemon_data = get_pokemon_data(pokemon_name)
@@ -72,10 +85,10 @@ def search_pokemon():
         result_text.tag_config('bold', font=('Helvetica', 12, 'bold'))
         result_text.tag_config('data', font=('Arial', 11))
         result_text.tag_config('sub_bold', font=('Helvetica', 11, 'bold italic'))
-        result_text.insert("end", "ID: ", 'bold')
-        result_text.insert("end", f"{pokemon_data['id']}\n", 'data')
-        result_text.insert("end", "Name: ", 'bold')
-        result_text.insert("end", f"{pokemon_data['name']}\n", 'data')
+        #result_text.insert("end", "ID: ", 'bold')
+        #result_text.insert("end", f"{pokemon_data['id']}\n", 'data')
+        #result_text.insert("end", "Name: ", 'bold')
+        #result_text.insert("end", f"{pokemon_data['name']}\n", 'data')
         result_text.insert("end", "Height: ", 'bold')
         result_text.insert("end", f"{pokemon_data['height']}\n", 'data')
         result_text.insert("end", "Weight: ", 'bold')
@@ -101,29 +114,55 @@ def search_pokemon():
         result_text.insert("end", f"{pokemon_data['base_stats']['speed']}\n", 'data')
         result_text.insert("end", "Abilities: ", 'bold')
         result_text.insert("end", ", ".join(pokemon_data['abilities']) + "\n", 'data')
-        result_text.insert("end", "Types: ", 'bold')
+        result_text.insert("end", "Type(s): ", 'bold')
         result_text.insert("end", ", ".join(pokemon_data['types']), 'data')
+        pokemon_id.set(pokemon_data['id'])
+        print("pokename:" + pokemon_data['name'])
+        poke_name.set(pokemon_data['name'].capitalize())
+        update_image()
+        update_name()
 
 
-def main():
-    global entry, result_text
-    root = Tk()
-    root.title("Pokémon API")
-    root.geometry("400x500")
+def update_image():
+    formatted_count = "{:03d}".format(pokemon_id.get())
+    print(f'count: {formatted_count}')
+    img_path = f'thumbnails/{formatted_count}.png'
+    print(f'image name: {img_path}')
+    image = Image.open(img_path)
+    photo = ImageTk.PhotoImage(image)
+    poke_img_label.config(image=photo)
+    poke_img_label.image = photo  # Keep a reference to the image
 
-    entry_label = Label(root, text="Enter the name of the Pokémon:")
-    entry_label.pack(pady=10)
+def update_name():
+    print("flag")
+    formatted_id = "{:03d}".format(pokemon_id.get())
+    display_name = f'{formatted_id} - {poke_name.get()}'
+    print(f'pokemon name: {display_name}')
+    entry_name.config(text=display_name)
 
-    entry = Entry(root, width=20)
-    entry.pack(pady=10)
+global entry, result_text
 
-    search_button = Button(root, text="Search", command=search_pokemon)
-    search_button.pack(pady=10)
+label_font = font.Font(family="Arial", size=12, weight="bold")
+entry_label = tk.Label(root, text="Enter the name of the Pokémon:")
+entry_label.pack(pady=10)
 
-    result_text = Text(root, width=40, height=15)
-    result_text.pack(pady=10)
+entry = tk.Entry(root, width=20)
+entry.pack(pady=10)
 
-    root.mainloop()
+search_button = tk.Button(root, text="Search", command=search_pokemon)
+search_button.pack(pady=30)
+
+poke_img_label = tk.Label(root)
+poke_img_label.pack(pady=5)
+
+name_font = font.Font(family="Helvetica", size=24, weight="bold")
+entry_name = tk.Label(root, font=name_font)
+entry_name.pack(pady=3)
+
+result_text = tk.Text(root, width=45, height=13)
+result_text.pack(pady=10)
+
+root.mainloop()
 
 if __name__ == "__main__":
     main()
