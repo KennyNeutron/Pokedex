@@ -639,33 +639,33 @@ class Ui_MainWindow(object):
         self.lbl_Abilities.setText(_translate("MainWindow", "overgrow, chlorophyl"))
     
     def pressed_btn_Prev(self):
-        print("pressed prev")
+        #print("pressed prev")
         self.current_PokemonID-=1
         if(self.current_PokemonID<1):
             self.current_PokemonID=905
-        print(f"pokemon to find: {self.current_PokemonID}")
+        #print(f"pokemon to find: {self.current_PokemonID}")
         self.pokemon_data=get_pokemon_data(str(self.current_PokemonID))
-        print(self.pokemon_data)
-        print(f"got data of pokemon: {self.pokemon_data['name']}")
+        #print(self.pokemon_data)
+        #print(f"got data of pokemon: {self.pokemon_data['name']}")
         self.update_PokeDetails()
 
     def pressed_btn_Next(self):
-        print("pressed next")
+        #print("pressed next")
         self.current_PokemonID+=1
         if self.current_PokemonID>905:
             self.current_PokemonID=1
-        print(f"pokemon to find: {self.current_PokemonID}")
+        #print(f"pokemon to find: {self.current_PokemonID}")
         self.pokemon_data=get_pokemon_data(str(self.current_PokemonID))
-        print(self.pokemon_data)
-        print(f"got data of pokemon: {self.pokemon_data['name']}")
+        #print(self.pokemon_data)
+        #print(f"got data of pokemon: {self.pokemon_data['name']}")
         self.update_PokeDetails()
 
     def pressed_btn_Search(self): #remove this function later, this is only for testing
-        print(f"Searching for {self.le_search.text()}")
+        #print(f"Searching for {self.le_search.text()}")
         self.pokemon_data=get_pokemon_data(self.le_search.text())
         self.current_PokemonID = int(self.pokemon_data['id'])
-        print(self.pokemon_data)
-        print(f"got data of pokemon: {self.pokemon_data['name']}")
+        #print(self.pokemon_data)
+        #print(f"got data of pokemon: {self.pokemon_data['name']}")
         self.update_PokeDetails()
     
     def update_PokeDetails(self):
@@ -700,9 +700,9 @@ class Ui_MainWindow(object):
                 "}"
             )
     def update_PokemonTypes(self):
-        print(f"type size: {len(self.pokemon_data['types'])}")
+        #print(f"type size: {len(self.pokemon_data['types'])}")
         if len(self.pokemon_data['types']) == 1:
-            print(f"the type1 color:{self.pokemon_type_colors[self.pokemon_data['types'][0].capitalize()]}")
+            #print(f"the type1 color:{self.pokemon_type_colors[self.pokemon_data['types'][0].capitalize()]}")
             self.btn_Type1.setStyleSheet("QPushButton#btn_Type1 {\n"
             "    border-radius: 15px;\n"
             f"    background-color: {self.pokemon_type_colors[self.pokemon_data['types'][0].capitalize()]}; \n"
@@ -713,8 +713,8 @@ class Ui_MainWindow(object):
             self.btn_Type2.hide()
         else:
             self.btn_Type2.show()
-            print(f"the type1 color:{self.pokemon_type_colors[self.pokemon_data['types'][0].capitalize()]}")
-            print(f"the type2 color:{self.pokemon_type_colors[self.pokemon_data['types'][1].capitalize()]}")
+            #print(f"the type1 color:{self.pokemon_type_colors[self.pokemon_data['types'][0].capitalize()]}")
+            #print(f"the type2 color:{self.pokemon_type_colors[self.pokemon_data['types'][1].capitalize()]}")
             self.btn_Type1.setText(self.pokemon_data['types'][0].upper())
             self.btn_Type1.setStyleSheet("QPushButton#btn_Type1 {\n"
             "    border-radius: 15px;\n"
@@ -757,7 +757,7 @@ class Ui_MainWindow(object):
 
     def update_Image(self):
         which_img = "{:03d}".format(self.pokemon_data['id'])
-        print(f"image path: imagesHQ/{which_img}.png")
+        #print(f"image path: imagesHQ/{which_img}.png")
         self.lbl_CurrentPokemon.setPixmap(QtGui.QPixmap(f"imagesHQ/{which_img}.png"))
 
 #API CODE STARTS HERE
