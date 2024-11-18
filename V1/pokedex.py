@@ -75,7 +75,7 @@ root.geometry("400x650")
 pokemon_id = tk.IntVar()
 poke_name = tk.StringVar()
 
-icon = PhotoImage(file="V1/icon.png")
+icon = PhotoImage(file="icon.png")
 root.iconphoto(False, icon)
 
 
@@ -135,7 +135,7 @@ def search_pokemon():
 def update_image():
     formatted_count = "{:03d}".format(pokemon_id.get())
     print(f"count: {formatted_count}")
-    img_path = f"V1/thumbnails/{formatted_count}.png"
+    img_path = f"thumbnails/{formatted_count}.png"
     print(f"image name: {img_path}")
     image = Image.open(img_path)
     photo = ImageTk.PhotoImage(image)
